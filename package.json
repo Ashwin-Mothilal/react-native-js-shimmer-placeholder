@@ -25,7 +25,7 @@
   "dependencies": {
     "prop-types": "^15.7.2",
     "react-native-linear-gradient": ">=2.4.0",
-    "react-native-reanimated": "<=^1.10.1"
+    "react-native-reanimated": "<=1.10.1"
   },
   "peerDependencies": {
     "react-native": "*",
