@@ -214,10 +214,15 @@ ViewPlaceholder.propTypes = {
 ViewPlaceholder.defaultProps = {
   baseColor: "white",
   canTriggerAnimationCompletion: true,
+  children: null,
+  childrenWrapperStyle: {},
+  containerStyle: {},
   end: {
     x: 1,
     y: 0,
   },
+  gradientContainerStyle: {},
+  gradientStyle: {},
   height: "100%",
   highlightColor: "rgba(211,211,211,0.5)",
   locations: [0, 0.5, 1],
