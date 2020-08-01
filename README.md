@@ -71,3 +71,8 @@ import { TextPlaceholder } from "react-native-js-shimmer-placeholder";
 | **`textStyle`**           | Style for Text to be rendered                                    | `{}`
  
 
+#### Limitation
+1. Do not use for more than 5 number of list item because of this react-native-reanimated limitation https://github.com/software-mansion/react-native-reanimated/issues/782
+
+#### TODO List
+- [ ] Adding support for Reanimated 2 which will solve the above mentioned limitation
