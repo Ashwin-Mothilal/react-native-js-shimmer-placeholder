@@ -2,7 +2,16 @@
 
 Shimmering effect using [react-native-reanimated](https://github.com/software-mansion/react-native-reanimated), [react-native-linear-gradient](https://github.com/react-native-community/react-native-linear-gradient) and [react-native-masked-view](https://github.com/react-native-community/react-native-masked-view)
 
-##Usage
+## Demo
+![Demo of React Native JS Shimmer Placeholder](https://github.com/Ashwin-Mothilal/react-native-js-shimmer-placeholder/blob/master/example.gif)
+
+## Installation
+
+```
+npm install react-native-js-shimmer-placeholder
+```
+
+## Usage
 To use shimmering effect for View
 
 ```javascript
@@ -23,9 +32,9 @@ import { TextPlaceholder } from "react-native-js-shimmer-placeholder";
 </TextPlaceholder>;
 ```
 
-##Properties
+## Properties
 
-`Common props for both ViewPlaceholder and TextPlaceholder`
+#### Common props for both ViewPlaceholder and TextPlaceholder
 
 | Prop                                | Description                                                      | Default               | 
 | :---------------------------------- | ---------------------------------------------------------------- | --------------------: |
@@ -41,7 +50,7 @@ import { TextPlaceholder } from "react-native-js-shimmer-placeholder";
 | **`totalDuration`**                 | Duration of the single shimmer cycle                             | `1500`
 
 
-Props only for ViewPlaceholder
+#### Props only for ViewPlaceholder
 
 | Prop                         | Description                                                                           | Default    |
 | :--------------------------- | ------------------------------------------------------------------------------------- | ---------: |
@@ -52,7 +61,7 @@ Props only for ViewPlaceholder
 | **`height`**                 | Height of the shimmer                                                                 | `100%`
 | **`width`**                  | Width of the Shimmer                                                                  | `Required`
 
-Props only for TextPlaceholder
+#### Props only for TextPlaceholder
 
 | Prop                      | Description                                                      | Default |
 | :------------------------ | ---------------------------------------------------------------- | ------: |
