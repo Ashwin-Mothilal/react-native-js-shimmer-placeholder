@@ -6,13 +6,16 @@ import Animated, {
   and,
   call,
   cond,
-  Easing,
   eq,
-  set,
   stopClock,
   useCode,
 } from 'react-native-reanimated';
-import {useClocks, useValues, loop, timing} from './RedashUtilities';
+import {useClocks, useValues} from './RedashUtilities';
+import {
+  setChildOpacity,
+  setGradientOpacity,
+  setShimmerProgress,
+} from './ReanimatedHelpers';
 
 const AnimatedLinearGradient = Animated.createAnimatedComponent(LinearGradient);
 
@@ -65,56 +68,19 @@ const ViewPlaceholder = memo(
           [
             stopClock(childShowOpacityClock),
             stopClock(gradientHideClock),
-            set(
+            setShimmerProgress(
               shimmerProgress,
-              loop({
-                duration: totalDuration,
-                easing: Easing.linear,
-                clock: shimmerProgressClock,
-              }),
+              totalDuration,
+              shimmerProgressClock,
             ),
-            set(
-              childOpacity,
-              timing({
-                from: childOpacity,
-                to: 0,
-                duration: 225,
-                easing: Easing.bezier(0.23, 0.07, 0.25, 1),
-                clock: childHideOpacityClock,
-              }),
-            ),
-            set(
-              gradientOpacity,
-              timing({
-                from: gradientOpacity,
-                to: 1,
-                duration: 225,
-                clock: gradientShowClock,
-              }),
-            ),
+            setChildOpacity(childOpacity, childHideOpacityClock, 0, 225),
+            setGradientOpacity(gradientOpacity, gradientShowClock, 1),
           ],
           [
             stopClock(childHideOpacityClock),
             stopClock(gradientShowClock),
-            set(
-              childOpacity,
-              timing({
-                from: childOpacity,
-                to: 1,
-                duration: 500,
-                easing: Easing.bezier(0.23, 0.07, 0.25, 1),
-                clock: childShowOpacityClock,
-              }),
-            ),
-            set(
-              gradientOpacity,
-              timing({
-                from: gradientOpacity,
-                to: 0,
-                duration: 225,
-                clock: gradientHideClock,
-              }),
-            ),
+            setChildOpacity(childOpacity, childShowOpacityClock, 1, 500),
+            setGradientOpacity(gradientOpacity, gradientHideClock, 0),
             stopClock(shimmerProgressClock),
           ],
         ),
@@ -202,9 +168,9 @@ ViewPlaceholder.propTypes = {
 
   // TODO: items
   /*repeatCount: propTypes.number,
-  repeatDelay: propTypes.number,
-  repeatMode: propTypes.string,
-  shimmerAnimationConfig: propTypes.object,*/
+    repeatDelay: propTypes.number,
+    repeatMode: propTypes.string,
+    shimmerAnimationConfig: propTypes.object,*/
 };
 
 ViewPlaceholder.defaultProps = {
@@ -227,8 +193,8 @@ ViewPlaceholder.defaultProps = {
 
   // TODO: items
   /*repeatCount: -1,
-  repeatDelay: 0,
-  shimmerAnimationConfig: {},*/
+    repeatDelay: 0,
+    shimmerAnimationConfig: {},*/
 };
 
 const ViewPlaceholderStyles = StyleSheet.create({

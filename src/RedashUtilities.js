@@ -1,5 +1,5 @@
 /**
- * Not importing [react-native-redash][https://github.com/wcandillon/react-native-redash]
+ * Not importing [react-native-redash] [https://github.com/wcandillon/react-native-redash]
  * because it required you react-native-gesture-handler to use these functions
  * Thanks to William Candillion for this beautiful code
  */

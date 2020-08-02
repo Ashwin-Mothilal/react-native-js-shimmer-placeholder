@@ -6,13 +6,12 @@ import Animated, {
   and,
   call,
   cond,
-  Easing,
   eq,
-  set,
   stopClock,
   useCode,
 } from "react-native-reanimated";
-import { loop, timing, useClocks, useValues } from "./RedashUtilities";
+import { useClocks, useValues } from "./RedashUtilities";
+import { setGradientOpacity, setShimmerProgress } from "./ReanimatedHelpers";
 
 const AnimatedLinearGradient = Animated.createAnimatedComponent(LinearGradient);
 
@@ -61,36 +60,17 @@ const TextPlaceholder = memo(
           eq(show, SHIMMER.SHOW),
           [
             stopClock(gradientHideClock),
-            set(
+            setShimmerProgress(
               shimmerProgress,
-              loop({
-                duration: totalDuration,
-                easing: Easing.linear,
-                clock: shimmerProgressClock,
-              })
+              totalDuration,
+              shimmerProgressClock
             ),
-            set(
-              gradientOpacity,
-              timing({
-                from: gradientOpacity,
-                to: 1,
-                duration: 225,
-                clock: gradientShowClock,
-              })
-            ),
+            setGradientOpacity(gradientOpacity, gradientShowClock, 1),
           ],
           [
             stopClock(shimmerProgressClock),
             stopClock(gradientShowClock),
-            set(
-              gradientOpacity,
-              timing({
-                from: gradientOpacity,
-                to: 0,
-                duration: 225,
-                clock: gradientHideClock,
-              })
-            ),
+            setGradientOpacity(gradientOpacity, gradientHideClock, 0),
           ]
         ),
       ],
