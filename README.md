@@ -76,3 +76,9 @@ import { TextPlaceholder } from "react-native-js-shimmer-placeholder";
 
 #### TODO List
 - [ ] Adding support for Reanimated 2 which will solve the above mentioned limitation
+
+#### Contribution 
+Any help to improve the module is appreciated
+
+#### LICENSE
+react-native-js-shimmer-placeholder is licensed under [The MIT License](https://github.com/Ashwin-Mothilal/react-native-js-shimmer-placeholder/blob/master/LICENSE)
