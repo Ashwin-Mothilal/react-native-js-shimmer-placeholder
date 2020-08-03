@@ -14,10 +14,12 @@
     "react",
     "react-native",
     "shimmer",
-    "shimmer-js"
+    "shimmer-js",
+    "shimmer-reanimated",
+    "text-shimmer"
   ],
   "author": "Ashwin Mothilal",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/Ashwin-Mothilal/react-native-js-shimmer-placeholder/issues"
   },
