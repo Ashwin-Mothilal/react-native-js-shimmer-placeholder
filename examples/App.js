@@ -69,7 +69,7 @@ const App = () => {
             width={100}
             gradientContainerStyle={ExampleStyles.gradientContainerStyle}
             canTriggerAnimationCompletion={index === 0}
-            containerStyle={!show ? ExampleStyles.imageContainerStyle : {}}
+            style={!show ? ExampleStyles.imageContainerStyle : {}}
             onAnimationComplete={onAnimationComplete}>
             <Image
               source={Images[index % Images.length]}
@@ -80,16 +80,16 @@ const App = () => {
             <TextPlaceholder
               show={show}
               textStyle={ExampleStyles.nameText}
-              maskStyle={ExampleStyles.maskStyle}
-              maskedChildrenStyle={{
-                backgroundColor: RandomColors[index % RandomColors.length],
-              }}>
+              textColor={RandomColors[index % RandomColors.length]}
+              style={ExampleStyles.maskStyle}
+              numberOfLines={1}>
               {`${item.first_name} ${item.last_name}`}
             </TextPlaceholder>
             <TextPlaceholder
               show={show}
-              maskStyle={ExampleStyles.maskStyle}
-              textStyle={ExampleStyles.emailText}>
+              style={ExampleStyles.maskStyle}
+              textStyle={ExampleStyles.emailText}
+              numberOfLines={1}>
               {`${item.email}`}
             </TextPlaceholder>
           </View>
@@ -99,18 +99,18 @@ const App = () => {
     [onAnimationComplete, show],
   );
 
-  const renderItemSeparatorComponent = useCallback(() => {
+  const renderItemSeparatorComponent = () => {
     return <View style={ExampleStyles.separator} />;
-  }, []);
+  };
 
-  const getKeyExtractor = useCallback((item, index) => index.toString(), []);
+  const getKeyExtractor = (item, index) => index.toString();
 
   const renderHeaderComponent = useCallback(() => {
     return (
       <TextPlaceholder
         textStyle={ExampleStyles.headerText}
         show={show}
-        maskedChildrenStyle={ExampleStyles.headerMasked}>
+        textColor={'#3a4449'}>
         Your friends
       </TextPlaceholder>
     );
@@ -196,7 +196,7 @@ const ExampleStyles = StyleSheet.create({
   nameAndEmailContainer: {
     justifyContent: 'center',
     height: '100%',
-    width: '100%',
+    flex: 1,
   },
   nameText: {
     marginStart: 10,
@@ -207,11 +207,7 @@ const ExampleStyles = StyleSheet.create({
     marginTop: 10,
   },
   maskStyle: {
-    height: 30,
-    flex: 0,
-  },
-  nameTextMaskedChildrenStyle: {
-    backgroundColor: '#0c6db2',
+    justifyContent: 'center',
   },
   listHeaderStyle: {
     backgroundColor: 'white',
@@ -221,9 +217,6 @@ const ExampleStyles = StyleSheet.create({
   headerText: {
     fontSize: 24,
     fontWeight: 'bold',
-  },
-  headerMasked: {
-    backgroundColor: '#3a4449',
   },
 });
 

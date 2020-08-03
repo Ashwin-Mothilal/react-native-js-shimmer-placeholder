@@ -33,7 +33,7 @@ const ViewPlaceholder = memo(
     show,
     baseColor,
     highlightColor,
-    containerStyle,
+    style,
     gradientStyle,
     childrenWrapperStyle,
     totalDuration,
@@ -42,6 +42,7 @@ const ViewPlaceholder = memo(
     end,
     onAnimationComplete,
     canTriggerAnimationCompletion,
+    rest,
   }) => {
     const [shimmerProgress, childOpacity, gradientOpacity] = useValues([
       0,
@@ -114,14 +115,16 @@ const ViewPlaceholder = memo(
             height,
             width,
           },
-          containerStyle,
-        ]}>
+          style,
+        ]}
+        pointerEvents={'box-none'}>
         <View
           style={[
             ViewPlaceholderStyles.gradientContainer,
             StyleSheet.absoluteFill,
             gradientContainerStyle,
-          ]}>
+          ]}
+          pointerEvents={'box-none'}>
           <AnimatedLinearGradient
             colors={colorShimmer}
             style={[
@@ -140,7 +143,9 @@ const ViewPlaceholder = memo(
             pointerEvents={'none'}
           />
         </View>
-        <Animated.View style={[{opacity: childOpacity}, childrenWrapperStyle]}>
+        <Animated.View
+          style={[{opacity: childOpacity}, childrenWrapperStyle]}
+          {...rest}>
           {children}
         </Animated.View>
       </View>
@@ -153,7 +158,7 @@ ViewPlaceholder.propTypes = {
   canTriggerAnimationCompletion: propTypes.bool,
   children: propTypes.any,
   childrenWrapperStyle: propTypes.object,
-  containerStyle: propTypes.object,
+  style: propTypes.object,
   end: propTypes.object,
   gradientContainerStyle: propTypes.object,
   gradientStyle: propTypes.object,

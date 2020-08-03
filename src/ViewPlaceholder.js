@@ -33,7 +33,7 @@ const ViewPlaceholder = memo(
     show,
     baseColor,
     highlightColor,
-    containerStyle,
+    style,
     gradientStyle,
     childrenWrapperStyle,
     totalDuration,
@@ -42,6 +42,7 @@ const ViewPlaceholder = memo(
     end,
     onAnimationComplete,
     canTriggerAnimationCompletion,
+    ...rest
   }) => {
     const [shimmerProgress, childOpacity, gradientOpacity] = useValues([
       0,
@@ -114,8 +115,9 @@ const ViewPlaceholder = memo(
             height,
             width,
           },
-          containerStyle,
+          style,
         ]}
+        pointerEvents={"box-none"}
       >
         <View
           style={[
@@ -123,6 +125,7 @@ const ViewPlaceholder = memo(
             StyleSheet.absoluteFill,
             gradientContainerStyle,
           ]}
+          pointerEvents={"none"}
         >
           <AnimatedLinearGradient
             colors={colorShimmer}
@@ -139,11 +142,11 @@ const ViewPlaceholder = memo(
             locations={locations}
             start={start}
             end={end}
-            pointerEvents={"none"}
           />
         </View>
         <Animated.View
           style={[{ opacity: childOpacity }, childrenWrapperStyle]}
+          {...rest}
         >
           {children}
         </Animated.View>
@@ -157,7 +160,6 @@ ViewPlaceholder.propTypes = {
   canTriggerAnimationCompletion: propTypes.bool,
   children: propTypes.any,
   childrenWrapperStyle: propTypes.object,
-  containerStyle: propTypes.object,
   end: propTypes.object,
   gradientContainerStyle: propTypes.object,
   gradientStyle: propTypes.object,
@@ -167,6 +169,7 @@ ViewPlaceholder.propTypes = {
   onAnimationComplete: propTypes.func,
   show: propTypes.bool,
   start: propTypes.object,
+  style: propTypes.object,
   totalDuration: propTypes.number,
   width: propTypes.number.isRequired,
 
@@ -180,9 +183,7 @@ ViewPlaceholder.propTypes = {
 ViewPlaceholder.defaultProps = {
   baseColor: "white",
   canTriggerAnimationCompletion: true,
-  children: null,
   childrenWrapperStyle: {},
-  containerStyle: {},
   end: {
     x: 1,
     y: 0,
@@ -198,6 +199,7 @@ ViewPlaceholder.defaultProps = {
     x: 0,
     y: 0,
   },
+  style: {},
   totalDuration: 1500,
 
   // TODO: items

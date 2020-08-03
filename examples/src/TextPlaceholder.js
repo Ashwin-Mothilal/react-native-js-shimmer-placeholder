@@ -31,11 +31,13 @@ const TextPlaceholder = memo(
     show,
     totalDuration,
     textStyle,
-    maskedChildrenStyle,
+    viewBehindMaskStyle,
     gradientStyle,
-    maskStyle,
+    style,
     canTriggerAnimationCompletion,
     onAnimationComplete,
+    textColor,
+    ...rest
   }) => {
     const [width, setWidth] = useState(0);
     const MaskedView = require('@react-native-community/masked-view').default;
@@ -108,23 +110,29 @@ const TextPlaceholder = memo(
             TextPlaceholderStyles.gradientStyle,
             gradientStyle,
           ]}
-          colors={colorShimmer}>
-          <Text
-            style={[TextPlaceholderStyles.zeroOpacity, textStyle]}
-            onLayout={onLayout}>
-            {children}
-          </Text>
+          colors={colorShimmer}
+          pointerEvents={'none'}>
+          <View style={[TextPlaceholderStyles.maskElementContainer, style]}>
+            <Text
+              style={[TextPlaceholderStyles.zeroOpacity, textStyle]}
+              onLayout={onLayout}
+              {...rest}>
+              {children}
+            </Text>
+          </View>
         </AnimatedLinearGradient>
       );
     };
 
-    const renderMaskedChildrenBackground = () => {
+    const renderViewBehindMask = () => {
       return (
         <View
           style={[
-            TextPlaceholderStyles.maskedChildrenStyle,
-            maskedChildrenStyle,
+            TextPlaceholderStyles.viewBehindMaskStyle,
+            {backgroundColor: textColor},
+            viewBehindMaskStyle,
           ]}
+          pointerEvents={'none'}
         />
       );
     };
@@ -135,9 +143,15 @@ const TextPlaceholder = memo(
 
     return (
       <MaskedView
-        maskElement={<Text style={[textStyle]}>{children}</Text>}
-        style={[TextPlaceholderStyles.maskStyle, maskStyle]}>
-        {renderMaskedChildrenBackground()}
+        maskElement={
+          <View style={[TextPlaceholderStyles.maskElementContainer, style]}>
+            <Text style={[textStyle]} {...rest}>
+              {children}
+            </Text>
+          </View>
+        }
+        style={[TextPlaceholderStyles.maskStyle, style]}>
+        {renderViewBehindMask()}
         {renderGradientView()}
       </MaskedView>
     );
@@ -152,11 +166,12 @@ TextPlaceholder.propTypes = {
   gradientStyle: propTypes.object,
   highlightColor: propTypes.string,
   locations: propTypes.array,
-  maskStyle: propTypes.object,
-  maskedChildrenStyle: propTypes.object,
+  style: propTypes.object,
+  viewBehindMaskStyle: propTypes.object,
   onAnimationComplete: propTypes.func,
   show: propTypes.bool,
   start: propTypes.object,
+  textColor: propTypes.string,
   textStyle: propTypes.object,
   totalDuration: propTypes.number,
 };
@@ -171,8 +186,8 @@ TextPlaceholder.defaultProps = {
   gradientStyle: {},
   highlightColor: 'white',
   locations: [0, 0.5, 1],
-  maskStyle: {},
-  maskedChildrenStyle: {},
+  style: {},
+  viewBehindMaskStyle: {},
   onAnimationComplete: () => {},
   show: true,
   start: {
@@ -181,6 +196,7 @@ TextPlaceholder.defaultProps = {
   },
   textStyle: {},
   totalDuration: 1500,
+  textColor: '#5F717B',
 };
 
 const TextPlaceholderStyles = StyleSheet.create({
@@ -194,9 +210,13 @@ const TextPlaceholderStyles = StyleSheet.create({
   gradientStyle: {
     position: 'absolute',
   },
-  maskedChildrenStyle: {
+  viewBehindMaskStyle: {
     flex: 1,
-    backgroundColor: '#5F717B',
+    width: '100%',
+  },
+  maskElementContainer: {
+    flex: 1,
+    backgroundColor: 'transparent',
   },
 });
 
