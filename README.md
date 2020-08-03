@@ -12,6 +12,11 @@ Shimmering effect using [react-native-reanimated](https://github.com/software-ma
 npm install react-native-js-shimmer-placeholder
 ```
 
+or using yarn
+```
+yarn add react-native-js-shimmer-placeholder
+``` 
+
 ## Usage
 
 To use shimmering effect for View
