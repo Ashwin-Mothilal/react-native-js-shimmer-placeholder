@@ -8,6 +8,8 @@ Shimmering effect using [react-native-reanimated](https://github.com/software-ma
 
 ## Installation
 
+Make sure you have already installed [react-native-reanimated](https://github.com/software-mansion/react-native-reanimated), [react-native-linear-gradient](https://github.com/react-native-community/react-native-linear-gradient) and [react-native-masked-view](https://github.com/react-native-community/react-native-masked-view) or install it from their links 
+
 ```
 npm install react-native-js-shimmer-placeholder
 ```
