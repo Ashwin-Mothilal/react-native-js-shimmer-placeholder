@@ -70,6 +70,8 @@ const App = () => {
             gradientContainerStyle={ExampleStyles.gradientContainerStyle}
             canTriggerAnimationCompletion={index === 0}
             style={!show ? ExampleStyles.imageContainerStyle : {}}
+            repeatDelay={1600}
+            canUseProc={false}
             onAnimationComplete={onAnimationComplete}>
             <Image
               source={Images[index % Images.length]}

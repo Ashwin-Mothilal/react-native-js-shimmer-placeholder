@@ -4,7 +4,13 @@
  * Thanks to William Candillion for this beautiful code
  */
 
-import Animated, {Easing, Value} from 'react-native-reanimated';
+import Animated, {
+  add,
+  Easing,
+  greaterThan,
+  lessThan,
+  Value,
+} from 'react-native-reanimated';
 import {useRef} from 'react';
 
 const {
@@ -16,7 +22,6 @@ const {
   startClock,
   clockRunning,
   not,
-  and,
   timing: reTiming,
 } = Animated;
 
@@ -85,12 +90,21 @@ const timing = ({
   ]);
 };
 
+const delay = (node, duration) => {
+  const clock = new Clock();
+  return block([
+    timing({clock, from: 0, to: 1, duration}),
+    cond(not(clockRunning(clock)), node),
+  ]);
+};
+
 const loop = ({
   clock = new Clock(),
   easing = Easing.linear,
   duration = 250,
   boomerang = false,
-  autoStart = true,
+  repeatCount = new Value(-1),
+  repeatDelay = 0,
 }) => {
   const state = {
     finished: new Value(0),
@@ -103,20 +117,41 @@ const loop = ({
     duration,
     easing,
   };
+  const currentRepeatCount = new Value(0);
 
-  return block([
-    cond(and(not(clockRunning(clock)), autoStart ? 1 : 0), startClock(clock)),
+  const runLoopAnimation = block([
+    cond(not(clockRunning(clock)), startClock(clock)),
     reTiming(clock, state, config),
     cond(state.finished, [
       set(state.finished, 0),
       set(state.time, 0),
       set(state.frameTime, 0),
-      boomerang
-        ? set(config.toValue, cond(config.toValue, 0, 1))
-        : set(state.position, 0),
+      delay(
+        block([
+          set(currentRepeatCount, add(currentRepeatCount, 1)),
+          cond(
+            boomerang,
+            [set(config.toValue, cond(config.toValue, 0, 1))],
+            [set(state.position, 0)],
+          ),
+        ]),
+        repeatDelay,
+      ),
     ]),
     state.position,
   ]);
+
+  return cond(
+    greaterThan(repeatCount, -1),
+    [
+      cond(
+        lessThan(currentRepeatCount, repeatCount),
+        [runLoopAnimation],
+        [stopClock(clock), 0],
+      ),
+    ],
+    [runLoopAnimation],
+  );
 };
 
 export {loop, timing, useClocks, useValues};
