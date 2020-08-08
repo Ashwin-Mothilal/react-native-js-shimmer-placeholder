@@ -15,6 +15,7 @@ import {
   setChildOpacity,
   setGradientOpacity,
   setShimmerProgress,
+  setShimmerProgressWithoutProc,
 } from "./ReanimatedHelpers";
 
 const AnimatedLinearGradient = Animated.createAnimatedComponent(LinearGradient);
@@ -42,6 +43,10 @@ const ViewPlaceholder = memo(
     end,
     onAnimationComplete,
     canTriggerAnimationCompletion,
+    repeatCount,
+    repeatDelay,
+    boomerangMode,
+    canUseProc,
     ...rest
   }) => {
     const [shimmerProgress, childOpacity, gradientOpacity] = useValues([
@@ -69,11 +74,23 @@ const ViewPlaceholder = memo(
           [
             stopClock(childShowOpacityClock),
             stopClock(gradientHideClock),
-            setShimmerProgress(
-              shimmerProgress,
-              totalDuration,
-              shimmerProgressClock
-            ),
+            canUseProc
+              ? setShimmerProgress(
+                  shimmerProgress,
+                  totalDuration,
+                  shimmerProgressClock,
+                  repeatCount,
+                  repeatDelay,
+                  boomerangMode
+                )
+              : setShimmerProgressWithoutProc(
+                  shimmerProgress,
+                  totalDuration,
+                  shimmerProgressClock,
+                  repeatCount,
+                  repeatDelay,
+                  boomerangMode
+                ),
             setChildOpacity(childOpacity, childHideOpacityClock, 0, 225),
             setGradientOpacity(gradientOpacity, gradientShowClock, 1),
           ],
@@ -157,7 +174,9 @@ const ViewPlaceholder = memo(
 
 ViewPlaceholder.propTypes = {
   baseColor: propTypes.string,
+  boomerangMode: propTypes.bool,
   canTriggerAnimationCompletion: propTypes.bool,
+  canUseProc: propTypes.bool,
   children: propTypes.any,
   childrenWrapperStyle: propTypes.object,
   end: propTypes.object,
@@ -167,22 +186,20 @@ ViewPlaceholder.propTypes = {
   highlightColor: propTypes.string,
   locations: propTypes.array,
   onAnimationComplete: propTypes.func,
+  repeatCount: propTypes.number,
+  repeatDelay: propTypes.number,
   show: propTypes.bool,
   start: propTypes.object,
   style: propTypes.object,
   totalDuration: propTypes.number,
   width: propTypes.number.isRequired,
-
-  // TODO: items
-  /*repeatCount: propTypes.number,
-  repeatDelay: propTypes.number,
-  repeatMode: propTypes.string,
-  shimmerAnimationConfig: propTypes.object,*/
 };
 
 ViewPlaceholder.defaultProps = {
   baseColor: "white",
+  boomerangMode: false,
   canTriggerAnimationCompletion: true,
+  canUseProc: true,
   childrenWrapperStyle: {},
   end: {
     x: 1,
@@ -194,6 +211,8 @@ ViewPlaceholder.defaultProps = {
   highlightColor: "rgba(211,211,211,0.5)",
   locations: [0, 0.5, 1],
   onAnimationComplete: () => {},
+  repeatCount: -1,
+  repeatDelay: 0,
   show: true,
   start: {
     x: 0,
@@ -201,11 +220,6 @@ ViewPlaceholder.defaultProps = {
   },
   style: {},
   totalDuration: 1500,
-
-  // TODO: items
-  /*repeatCount: -1,
-  repeatDelay: 0,
-  shimmerAnimationConfig: {},*/
 };
 
 const ViewPlaceholderStyles = StyleSheet.create({

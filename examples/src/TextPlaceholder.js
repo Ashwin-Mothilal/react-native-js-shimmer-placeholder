@@ -11,7 +11,11 @@ import Animated, {
   useCode,
 } from 'react-native-reanimated';
 import {useClocks, useValues} from './RedashUtilities';
-import {setGradientOpacity, setShimmerProgress} from './ReanimatedHelpers';
+import {
+  setGradientOpacity,
+  setShimmerProgress,
+  setShimmerProgressWithoutProc,
+} from './ReanimatedHelpers';
 
 const AnimatedLinearGradient = Animated.createAnimatedComponent(LinearGradient);
 
@@ -37,6 +41,10 @@ const TextPlaceholder = memo(
     canTriggerAnimationCompletion,
     onAnimationComplete,
     textColor,
+    repeatCount,
+    repeatDelay,
+    boomerangMode,
+    canUseProc,
     ...rest
   }) => {
     const [width, setWidth] = useState(0);
@@ -62,11 +70,23 @@ const TextPlaceholder = memo(
           eq(show, SHIMMER.SHOW),
           [
             stopClock(gradientHideClock),
-            setShimmerProgress(
-              shimmerProgress,
-              totalDuration,
-              shimmerProgressClock,
-            ),
+            canUseProc
+              ? setShimmerProgress(
+                  shimmerProgress,
+                  totalDuration,
+                  shimmerProgressClock,
+                  repeatCount,
+                  repeatDelay,
+                  boomerangMode,
+                )
+              : setShimmerProgressWithoutProc(
+                  shimmerProgress,
+                  totalDuration,
+                  shimmerProgressClock,
+                  repeatCount,
+                  repeatDelay,
+                  boomerangMode,
+                ),
             setGradientOpacity(gradientOpacity, gradientShowClock, 1),
           ],
           [
@@ -160,25 +180,31 @@ const TextPlaceholder = memo(
 
 TextPlaceholder.propTypes = {
   baseColor: propTypes.string,
+  boomerangMode: propTypes.bool,
   canTriggerAnimationCompletion: propTypes.bool,
+  canUseProc: propTypes.bool,
   children: propTypes.string.isRequired,
   end: propTypes.object,
   gradientStyle: propTypes.object,
   highlightColor: propTypes.string,
   locations: propTypes.array,
-  style: propTypes.object,
-  viewBehindMaskStyle: propTypes.object,
   onAnimationComplete: propTypes.func,
+  repeatCount: propTypes.number,
+  repeatDelay: propTypes.number,
   show: propTypes.bool,
   start: propTypes.object,
+  style: propTypes.object,
   textColor: propTypes.string,
   textStyle: propTypes.object,
   totalDuration: propTypes.number,
+  viewBehindMaskStyle: propTypes.object,
 };
 
 TextPlaceholder.defaultProps = {
   baseColor: 'transparent',
+  boomerangMode: false,
   canTriggerAnimationCompletion: false,
+  canUseProc: true,
   end: {
     x: 1,
     y: 0,
@@ -186,21 +212,22 @@ TextPlaceholder.defaultProps = {
   gradientStyle: {},
   highlightColor: 'white',
   locations: [0, 0.5, 1],
-  style: {},
-  viewBehindMaskStyle: {},
   onAnimationComplete: () => {},
+  repeatCount: -1,
+  repeatDelay: 0,
   show: true,
   start: {
     x: 0,
     y: 0,
   },
+  style: {},
+  textColor: '#5F717B',
   textStyle: {},
   totalDuration: 1500,
-  textColor: '#5F717B',
+  viewBehindMaskStyle: {},
 };
 
 const TextPlaceholderStyles = StyleSheet.create({
-  container: {},
   maskStyle: {
     flex: 1,
   },
