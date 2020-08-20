@@ -8,23 +8,27 @@ Shimmering effect using [react-native-reanimated](https://github.com/software-ma
 
 ## Installation
 
-Make sure you have already installed [react-native-reanimated](https://github.com/software-mansion/react-native-reanimated), [react-native-linear-gradient](https://github.com/react-native-community/react-native-linear-gradient) and [react-native-masked-view](https://github.com/react-native-community/react-native-masked-view) or install it from their links 
+Make sure you have already installed [react-native-reanimated](https://github.com/software-mansion/react-native-reanimated), [react-native-linear-gradient](https://github.com/react-native-community/react-native-linear-gradient) and [react-native-masked-view](https://github.com/react-native-community/react-native-masked-view) or install it from their links
 
 ```
 npm install react-native-js-shimmer-placeholder --save
 ```
 
 or using yarn
+
 ```
 yarn add react-native-js-shimmer-placeholder
-``` 
+```
 
 ## Usage
 
 To use shimmering effect for View
 
 ```javascript
-import { ViewPlaceholder } from "react-native-js-shimmer-placeholder";
+import {
+  ViewPlaceholder,
+  Direction,
+} from "react-native-js-shimmer-placeholder";
 
 <ViewPlaceholder
   show={true}
@@ -35,6 +39,7 @@ import { ViewPlaceholder } from "react-native-js-shimmer-placeholder";
     borderColor: "lightgrey",
     borderRadius: 50,
   }}
+  direction={Direction.UP}
   gradientContainerStyle={{ borderRadius: 50 }}
 >
   <View
@@ -75,24 +80,23 @@ import { TextPlaceholder } from "react-native-js-shimmer-placeholder";
 
 #### Common props for both ViewPlaceholder and TextPlaceholder
 
-| Prop                                            | Description                                                                                       |                 Default  |
-| :---------------------------------------------- | ------------------------------------------------------------------------------------------------- | -----------------------: |
-| **`baseColor`**                                 | The base color of the linear gradient                                                             |                  `white` |
-| **`boomerangMode`**                             | After reaching the end of animation, either restart from the beginning or reverse back towards it |                  `false` |
-| **`canTriggerAnimationCompletion`**             | Conditional trigger of Animation completion `(useful for lists)`                                  |                   `true` |
-| **`canUseProc`**                                | Should use `proc` function from reanimated                                                        |                   `true` |
-| **`end`**                                       | Same as the prop used in Linear Gradient                                                          |          `{ x: 1, y:0 }` |
-| **`gradientStyle`**                             | Style for the Linear Gradient itself                                                              |                     `{}` |
-| **`highlightColor`**                            | The highlight color for the shimmer                                                               |  `rgba(211,211,211,0.5)` |
-| **`locations`**                                 | Same as the prop used in Linear Gradient                                                          |            `[0, 0.5, 1]` |
-| **`onAnimationComplete`**                       | Triggers on animation completion                                                                  |                `emptyFn` |
-| **`repeatCount`**                               | Number of times to repeat the animation                                                           |    `Depends on show prop`|
-| **`repeatDelay`**<sup>*</sup>                   | Delay after which the current animation will repeat                                               |                       `0`|
-| **`show`**                                      | Whether to show the shimmer effect                                                                |                   `true` |
-| **`start`**                                     | Same as the prop used in Linear Gradient                                                          |          `{ x: 0, y:0 }` |
-| **`totalDuration`**                             | Duration of the single shimmer cycle                                                              |                   `1500` |
+| Prop                                | Description                                                                                       |                 Default |
+| :---------------------------------- | ------------------------------------------------------------------------------------------------- | ----------------------: |
+| **`baseColor`**                     | The base color of the linear gradient                                                             |                 `white` |
+| **`boomerangMode`**                 | After reaching the end of animation, either restart from the beginning or reverse back towards it |                 `false` |
+| **`canTriggerAnimationCompletion`** | Conditional trigger of Animation completion `(useful for lists)`                                  |                  `true` |
+| **`canUseProc`**                    | Should use `proc` function from reanimated                                                        |                  `true` |
+| **`direction`**                     | Sets the direction of the Shimmer to move                                                         |       `Direction.RIGHT` |
+| **`gradientStyle`**                 | Style for the Linear Gradient itself                                                              |                    `{}` |
+| **`highlightColor`**                | The highlight color for the shimmer                                                               | `rgba(211,211,211,0.5)` |
+| **`locations`**                     | Same as the prop used in Linear Gradient                                                          |           `[0, 0.5, 1]` |
+| **`onAnimationComplete`**           | Triggers on animation completion                                                                  |               `emptyFn` |
+| **`repeatCount`**                   | Number of times to repeat the animation                                                           |  `Depends on show prop` |
+| **`repeatDelay`**<sup>\*</sup>      | Delay after which the current animation will repeat                                               |                     `0` |
+| **`show`**                          | Whether to show the shimmer effect                                                                |                  `true` |
+| **`totalDuration`**                 | Duration of the single shimmer cycle                                                              |                  `1500` |
 
-> <sup>*</sup>Set `canUseProc` prop to true for the maximum number of items with same `repeatDelay` and false to others if you use different `repeatDelay`'s.
+> <sup>\*</sup>Set `canUseProc` prop to true for the maximum number of items with same `repeatDelay` and false to others if you use different `repeatDelay`'s.
 
 #### Props only for ViewPlaceholder
 
@@ -109,15 +113,15 @@ To pass [View props](https://reactnative.dev/docs/view#props) just pass the prop
 
 #### Props only for TextPlaceholder
 
-| Prop                      | Description                                                      |                                 Default |
-| :------------------------ | ---------------------------------------------------------------- | --------------------------------------: |
-| **`children`**            | Text to be shimmered                                             |                             `undefined` |
-| **`style`**               | Style for the MaskedView                                         |                            `{ flex:1 }` |
-| **`viewBehindMaskStyle`** | Children of MaskedView which gives the actual color for the Text |              `{ flex:1, width:"100%" }` |
-| **`textStyle`**           | Style for Text to be rendered                                    |                                    `{}` |
-| **`textColor`**           | Text color of the children                                       |                               `#5F717B` |
+| Prop                      | Description                                                      |                    Default |
+| :------------------------ | ---------------------------------------------------------------- | -------------------------: |
+| **`children`**            | Text to be shimmered                                             |                `undefined` |
+| **`style`**               | Style for the MaskedView                                         |               `{ flex:1 }` |
+| **`viewBehindMaskStyle`** | Children of MaskedView which gives the actual color for the Text | `{ flex:1, width:"100%" }` |
+| **`textStyle`**           | Style for Text to be rendered                                    |                       `{}` |
+| **`textColor`**           | Text color of the children                                       |                  `#5F717B` |
 
-To pass [Text Props](https://reactnative.dev/docs/text#props) just pass the props as you do for a Text Component                 
+To pass [Text Props](https://reactnative.dev/docs/text#props) just pass the props as you do for a Text Component
 
 #### Limitation
 
