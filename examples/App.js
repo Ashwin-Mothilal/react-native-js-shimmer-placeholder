@@ -1,8 +1,8 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import {StyleSheet, View, FlatList, Image} from 'react-native';
-// import {ViewPlaceholder} from 'react-native-js-shimmer-placeholder';
 import {ViewPlaceholder} from './src/ViewPlaceholder';
 import {TextPlaceholder} from './src/TextPlaceholder';
+import {DIRECTION} from './src/Constants';
 
 const RandomColors = ['#0c6db2', '#000000', '#CC8019', '#333333', '#aa251d'];
 
@@ -71,6 +71,8 @@ const App = () => {
             canTriggerAnimationCompletion={index === 0}
             style={!show ? ExampleStyles.imageContainerStyle : {}}
             repeatDelay={1600}
+            height={100}
+            direction={DIRECTION.LEFT}
             canUseProc={false}
             onAnimationComplete={onAnimationComplete}>
             <Image

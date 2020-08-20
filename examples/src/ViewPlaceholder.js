@@ -17,13 +17,10 @@ import {
   setShimmerProgress,
   setShimmerProgressWithoutProc,
 } from './ReanimatedHelpers';
+import {DIRECTION, SHIMMER} from './Constants';
+import {getPropsForTheDirection} from './Helpers';
 
 const AnimatedLinearGradient = Animated.createAnimatedComponent(LinearGradient);
-
-const SHIMMER = {
-  SHOW: 1,
-  HIDE: 0,
-};
 
 const ViewPlaceholder = memo(
   ({
@@ -39,14 +36,13 @@ const ViewPlaceholder = memo(
     childrenWrapperStyle,
     totalDuration,
     gradientContainerStyle,
-    start,
-    end,
     onAnimationComplete,
     canTriggerAnimationCompletion,
     repeatCount,
     repeatDelay,
     boomerangMode,
     canUseProc,
+    direction,
     ...rest
   }) => {
     const [shimmerProgress, childOpacity, gradientOpacity] = useValues([
@@ -54,10 +50,12 @@ const ViewPlaceholder = memo(
       !show ? SHIMMER.SHOW : SHIMMER.HIDE,
       show ? SHIMMER.SHOW : SHIMMER.HIDE,
     ]);
-    const translateX = shimmerProgress.interpolate({
-      inputRange: [0, 1],
-      outputRange: [-width, width],
-    });
+    const {translateX, translateY, start, end} = getPropsForTheDirection(
+      shimmerProgress,
+      direction,
+      width,
+      height,
+    );
     const [
       gradientShowClock,
       shimmerProgressClock,
@@ -147,7 +145,7 @@ const ViewPlaceholder = memo(
             style={[
               ViewPlaceholderStyles.flexOne,
               {
-                transform: [{translateX}],
+                transform: [{translateY}, {translateX}],
                 backgroundColor: baseColor,
                 opacity: gradientOpacity,
                 width,
@@ -176,6 +174,7 @@ ViewPlaceholder.propTypes = {
   canUseProc: propTypes.bool,
   children: propTypes.any,
   childrenWrapperStyle: propTypes.object,
+  direction: propTypes.string,
   end: propTypes.object,
   gradientContainerStyle: propTypes.object,
   gradientStyle: propTypes.object,
@@ -189,7 +188,7 @@ ViewPlaceholder.propTypes = {
   start: propTypes.object,
   style: propTypes.object,
   totalDuration: propTypes.number,
-  width: propTypes.number.isRequired,
+  width: propTypes.oneOfType([propTypes.number, propTypes.string]).isRequired,
 };
 
 ViewPlaceholder.defaultProps = {
@@ -198,10 +197,7 @@ ViewPlaceholder.defaultProps = {
   canTriggerAnimationCompletion: true,
   canUseProc: true,
   childrenWrapperStyle: {},
-  end: {
-    x: 1,
-    y: 0,
-  },
+  direction: DIRECTION.RIGHT,
   gradientContainerStyle: {},
   gradientStyle: {},
   height: '100%',
@@ -211,10 +207,6 @@ ViewPlaceholder.defaultProps = {
   repeatCount: -1,
   repeatDelay: 0,
   show: true,
-  start: {
-    x: 0,
-    y: 0,
-  },
   style: {},
   totalDuration: 1500,
 };
