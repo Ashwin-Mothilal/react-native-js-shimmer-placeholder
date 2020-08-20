@@ -8,8 +8,8 @@ const setShimmerProgressWithoutProc = (
   repeatCount,
   repeatDelay,
   boomerangMode,
-) => {
-  return set(
+) =>
+  set(
     shimmerProgress,
     loop({
       duration: totalDuration,
@@ -20,7 +20,6 @@ const setShimmerProgressWithoutProc = (
       boomerang: boomerangMode,
     }),
   );
-};
 
 const setShimmerProgress = proc(
   (
@@ -30,8 +29,8 @@ const setShimmerProgress = proc(
     repeatCount,
     repeatDelay,
     boomerangMode,
-  ) => {
-    return set(
+  ) =>
+    set(
       shimmerProgress,
       loop({
         duration: totalDuration,
@@ -41,8 +40,7 @@ const setShimmerProgress = proc(
         repeatDelay,
         boomerang: boomerangMode,
       }),
-    );
-  },
+    ),
 );
 
 const setGradientOpacity = proc((gradientOpacity, clock, to) =>

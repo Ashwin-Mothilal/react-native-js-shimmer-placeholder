@@ -154,4 +154,11 @@ const loop = ({
   );
 };
 
-export {loop, timing, useClocks, useValues};
+const bInterpolateOverShimmerProgress = (progress, value) => {
+  return progress.interpolate({
+    inputRange: [0, 1],
+    outputRange: [-value, value],
+  });
+};
+
+export {loop, timing, useClocks, useValues, bInterpolateOverShimmerProgress};
