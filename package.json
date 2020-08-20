@@ -1,6 +1,6 @@
 {
   "name": "react-native-js-shimmer-placeholder",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "A Shimmer using React Native Reanimated",
   "main": "index.js",
   "scripts": {
